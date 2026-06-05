@@ -1,0 +1,158 @@
+2. Code Refinement
+Subtask 2 - Code Repair using Sequence-to-Sequence Models
+Overview
+In this task, you will explore sequence-to-sequence (seq2seq) modeling through automated code repair. Given a buggy code snippet as input, the model must generate a corrected version of the code.
+The goal of this assignment is not to achieve the highest benchmark score using large pretrained models. Instead, the focus is on:
+* understanding architectural design choices,
+* experimenting with different seq2seq approaches,
+* and analyzing the strengths and limitations of each approach.
+This task is intentionally open-ended and based on experimentation.
+________________
+
+
+Dataset
+We will use the CodeXGLUE Code Refinement dataset.
+https://huggingface.co/datasets/google/code_x_glue_cc_code_refinement
+The dataset contains pairs of buggy code snippets and corrected code snippets.
+Input
+public java.lang.String METHOD_1 ( ) {
+    return new TYPE_1 ( STRING_1 ) . format (
+        VAR_1 [ ( ( VAR_1 . length ) - 1 ) ] . getTime ( )
+    ) ;
+}
+
+
+Output
+public java.lang.String METHOD_1 ( ) {
+    return new TYPE_1 ( STRING_1 ) . format (
+        VAR_1 [ ( ( type ) - 1 ) ] . getTime ( )
+    ) ;
+}
+________________
+
+
+Suggested Workflow
+The following is only a rough guideline. You are encouraged to explore beyond this.
+Build a Baseline
+Start with a simple encoder-decoder model like RNN / LSTM / GRU encoder-decoder. Establish a baseline before moving to more advanced architectures.
+________________
+
+
+Improve the Architecture
+Experiment with:
+* bidirectional encoders,
+* deeper recurrent networks,
+* different embedding dimensions,
+* attention mechanisms,
+* dropout,
+* gradient clipping,
+* different tokenization strategies.
+Analyze which changes help and why.
+________________
+
+
+Transformer-based Models
+Implement transformer components from scratch.
+This includes:
+* self-attention,
+* multi-head attention,
+* positional encoding,
+* encoder-decoder attention,
+* masking mechanisms.
+You may use PyTorch/TensorFlow primitives, but transformer blocks and attention mechanisms should be implemented by you and not imported from high-level libraries.
+The purpose is to understand the architecture well.
+________________
+
+
+Ablations and Experiments
+A major component of this assignment is experimentation.
+You are expected to conduct meaningful ablation studies.
+Possible axes of experimentation include:
+Architecture
+* RNN vs LSTM vs GRU
+* attention vs no attention
+* recurrent vs transformer architectures
+* encoder depth
+* decoder depth
+Tokenization
+* character-level
+* whitespace tokenization
+* subword tokenization
+* vocabulary size effects
+Training
+* teacher forcing ratio
+* learning rate
+* batch size
+* optimizer choice
+* scheduled sampling
+Decoding
+* greedy decoding
+* beam search
+* top-k sampling
+Representation
+* positional encoding variants
+* embedding size
+* hidden dimension size
+Data
+* training on shorter sequences only
+* robustness to unseen sequence lengths
+* multiple bug corruption
+Try to visualize and interpret your results rather than only reporting metrics.
+________________
+
+
+Deliverables
+1. Source Code
+Submit:
+* training scripts,
+* model implementations,
+* preprocessing code,
+* evaluation code.
+* Notebook with demo
+Your repository/notebook should be clean and reproducible.
+________________
+
+
+2. Experimental Report
+A short report containing:
+* methodology,
+* architectural choices,
+* experiments conducted,
+* ablation studies,
+* evaluation metrics,
+* qualitative outputs,
+________________
+
+
+3. Trained Model + Demo
+Submit:
+* trained checkpoints,
+* inference notebook/script,
+* optional Streamlit/Gradio demo.
+Suggested demo ideas:
+* buggy code → repaired code,
+* side-by-side comparison of different models,
+* attention visualization.
+________________
+
+
+Evaluation Criteria
+Your submission will primarily be evaluated on:
+* quality of experimentation,
+* depth of analysis,
+* clarity of reasoning,
+* ablation studies,
+A smaller but well-analyzed model is preferred over a large model where you cannot explain your decisions.
+________________
+
+
+Suggested Metrics
+You may use:
+* exact match accuracy,
+* BLEU score,
+* edit distance,
+* token-level accuracy,
+* syntax validity.
+________________
+
+

@@ -1,0 +1,385 @@
+1. Array Element Ranking
+Subtask 1 — Encoder-Only Transformers for Relational Reasoning
+Overview
+In this task, you will explore how encoder-only transformers process and reason over structured numerical data. You will build and analyze a BERT-style architecture for solving an Array Element Ranking problem.
+Unlike autoregressive models that process tokens sequentially, encoder-only transformers view the entire sequence simultaneously using bidirectional self-attention. This makes them particularly effective for tasks requiring global relational understanding.
+Through this assignment, you will investigate:
+* how self-attention performs implicit pairwise comparisons across a sequence,
+* how numerical information can be represented inside transformer architectures,
+* how positional encodings affect relational reasoning,
+* how attention differs from recurrence for global context tasks,
+* and how transformers behave under out-of-distribution inputs.
+The primary objective is not only to obtain good performance, but also to understand why the model behaves the way it does.
+________________
+
+
+Problem Statement
+You are given a sequence of integers:
+[45, 12, 99, 31]
+The task is to predict the relative sorted rank of each element.
+Sorted sequence:
+[12, 31, 45, 99]
+Corresponding ranks:
+[2, 0, 3, 1]
+Meaning:
+* 12 is the smallest → rank 0
+* 31 is second smallest → rank 1
+* 45 is third smallest → rank 2
+* 99 is largest → rank 3
+The model must output the rank of every token in the input sequence.
+This is fundamentally a global relational reasoning task, since determining the rank of a number requires comparing it against all other numbers in the sequence.
+________________
+
+
+Dataset
+You will work with a synthetic dataset available here.
+________________
+
+
+Suggested Workflow
+The following workflow is only a guideline. You are encouraged to go beyond it.
+________________
+
+
+1. Build Baselines
+Before implementing transformers, start with simpler architectures to understand why ranking is difficult for traditional sequence models.
+Possible baselines include:
+* Multi-Layer Perceptrons (MLPs)
+* RNNs
+* LSTMs
+Suggested Questions
+* How quickly do these models converge?
+* Do sequential models struggle with global comparisons?
+* Does performance degrade with longer sequences?
+* Can the models generalize to unseen patterns?
+Compare
+* Training convergence
+* Validation accuracy
+* Stability
+* Generalization behavior
+* Computational efficiency
+________________
+
+
+2. Implement an Encoder-Only Transformer
+Implement and train a transformer encoder from scratch for the ranking task.
+Treat the problem as a token classification problem, where each token predicts its own rank.
+Your implementation should include:
+* Bidirectional self-attention
+* Positional encodings
+* Multi-head attention
+* Feed-forward networks
+* Residual connections
+* Layer normalization
+* Classification head for rank prediction
+Important Note
+You may use low-level PyTorch or TensorFlow primitives.
+However, the attention mechanism and transformer blocks should ideally be implemented manually instead of importing high-level transformer libraries. The goal is to understand:
+* tensor shapes,
+* Q/K/V projections,
+* attention score computation,
+* masking behavior,
+* and multi-head aggregation.
+________________
+
+
+3. Inference, Visualization & Analysis
+Transformers are highly sensitive to data representation.
+After training:
+Attention Visualization
+Extract and visualize attention weights using heatmaps.
+Analyze questions such as:
+* How does a token attend to larger or smaller numbers?
+* Does the model compare elements pairwise?
+* Do different heads specialize differently?
+Example:
+* Does token 45 strongly attend to token 99 while determining its rank?
+* Does attention become more structured after training?
+________________
+
+
+Out-of-Distribution Testing
+Evaluate the model on sequences that differ significantly from the training distribution.
+Examples:
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+[1000, 900, 800, 700, ...]
+[5, 5, 5, 5, 5]
+Analyze:
+* robustness,
+* failure modes,
+* attention behavior,
+* and generalization capability.
+________________
+
+
+Ablations & Experiments
+A major component of this assignment is experimentation and analysis.
+You are expected to conduct meaningful ablation studies regarding how transformers process non-linguistic numerical data.
+________________
+
+
+A. Data Representation
+This is one of the most important aspects of the assignment.
+Categorical Embeddings vs Continuous Representations
+Investigate:
+* embedding layers,
+* learned projections,
+* normalized numerical inputs,
+* raw float inputs.
+Questions to explore:
+* Does the model treat 5 and 6 as mathematically related?
+* Or does it treat them as unrelated symbols?
+________________
+
+
+Sequence Normalization
+Experiment with:
+* Z-score normalization,
+* min-max scaling,
+* sequence-wise normalization.
+Analyze how normalization affects:
+* training stability,
+* convergence,
+* out-of-distribution performance.
+________________
+
+
+B. Architecture & Attention
+RNN/LSTM vs Transformer
+Compare:
+* sequential processing,
+* long-range reasoning,
+* parallelism,
+* global context understanding.
+________________
+
+
+Positional Encoding Ablation
+Remove positional encodings entirely.
+Questions:
+* Can the model still rank numbers?
+* Does order matter for this task?
+* What information is lost?
+________________
+
+
+Attention Head Specialization
+If using multiple attention heads:
+* visualize all heads,
+* compare their patterns,
+* analyze specialization.
+Do some heads focus on:
+* large numbers?
+* nearby tokens?
+* pairwise comparisons?
+________________
+
+
+Depth Experiments
+Compare:
+* 1-layer encoders
+* 2-layer encoders
+* 4-layer encoders
+Analyze:
+* convergence,
+* expressiveness,
+* overfitting,
+* attention structure.
+________________
+
+
+Deliverables
+1. Source Code
+Submit:
+* dataset generation scripts,
+* baseline implementations,
+* transformer implementation,
+* training scripts,
+* evaluation/inference code.
+Your code should be:
+* clean,
+* reproducible,
+* properly structured,
+* and easy to run.
+________________
+
+
+2. Experimental Report
+Submit a short report containing:
+* methodology,
+* architectural choices,
+* numerical representation strategies,
+* experiments performed,
+* ablation studies,
+* evaluation metrics,
+* attention visualizations,
+* conclusions and observations.
+Focus on analysis and reasoning, not just metrics.
+________________
+
+
+3. Trained Model + Demo
+Submit (mandatorily):
+* trained checkpoints,
+* inference notebook.
+Suggested Demo Ideas
+* User inputs 10 numbers
+* Model predicts ranks
+* Attention heatmap is visualized alongside predictions
+Optional:
+* interactive UI,
+* web demo,
+* visualization dashboard.
+________________
+
+
+Suggested Metrics
+You may use:
+Training Metrics
+* Cross-Entropy Loss
+* Validation Loss
+Evaluation Metrics
+* Token-level Accuracy
+* Exact Sequence Accuracy
+* Out-of-Distribution Accuracy
+________________
+
+
+Recommended Focus Areas
+The most important aspect of this assignment is understanding:
+* how transformers reason globally,
+* how attention performs comparisons,
+* how representation affects learning,
+* and how architectural choices influence behavior.
+Visualization and interpretation are strongly encouraged.
+Do not treat this as only a benchmarking task.
+________________
+
+
+Expected Outcomes
+By the end of this assignment, you should be comfortable with:
+* implementing transformer encoders from scratch,
+* understanding attention mathematically,
+* representing numerical data in transformers,
+* analyzing attention patterns,
+* designing ablation studies,
+* and evaluating model generalization behavior.
+
+
+### Subtask 1: Actionable Implementation Workflow
+
+This step-by-step, execution-focused implementation roadmap is designed to guide the development of your script or notebook sequentially, accounting for data variants, baselines, architecture, and visualization hook requirements.
+
+```
+[Phase 1: Data Pipeline] 
+       │
+       ├──► Branch 1A: Integer Lookup Embedding -> nn.Embedding(1000, d_model)
+       ├──► Branch 1B: Continuous Projection -> Sequence-Wise Normalization (MinMax / Z-Score) -> nn.Linear(1, d_model)
+       └──► Branch 1C: Value Functional Encoding -> Fourier Sinusoidal Vector -> nn.Linear(2n, d_model)
+       │
+[Phase 2: Non-Transformer Baselines]
+       │
+       ├──► MLP (Token-wise vs Flat Flattened Input)
+       └──► Sequential GRU / LSTM (Unidirectional vs Bidirectional)
+       │
+[Phase 3: Custom Transformer Block Implementation (From Scratch)]
+       │
+       └──► Multi-Head Attention (Save Attention Weights Hook) -> Pre-LN / Post-LN Block -> MLP Block
+       │
+[Phase 4: Loss & Architecture Optimization Heads]
+       │
+       ├──► Head Variant A: Token Classification Head -> nn.Linear(d_model, T) -> Cross-Entropy
+       └──► Head Variant B: Global Scoring Head -> nn.Linear(d_model, 1) -> Differentiable Soft-Ranking -> MSE
+       │
+[Phase 5: Evaluation Framework & OOD Stress Tests]
+       │
+       └──► In-Distribution (Test Split) -> OOD A (Monotonic) -> OOD B (Large Magnitudes) -> OOD C (Uniform)
+       │
+[Phase 6: Attention Analysis & Diagnostics]
+       │
+       └──► Heatmap Extraction -> Specialization Profiling -> Structural Evaluation
+
+```
+
+---
+
+### Phase-by-Phase Execution Plan
+
+#### Phase 1: Data Engineering & Representation Pipeline
+
+1. **Load and Split Matrix:**
+* Read `ranking_dataset.csv`. Parse columns into an Input feature tensor $X \in \mathbb{Z}^{10000 \times 10}$ and an Integer target tensor $Y \in \mathbb{Z}^{10000 \times 10}$.
+* Execute an $80/10/10$ random deterministic split (Train, Val, Test).
+
+
+2. **Build Modular Embedding Modules:**
+* **Branch 1A (Categorical Tokenization):** Feed raw integers straight into `nn.Embedding(num_embeddings=1000, embedding_dim=d_model)`.
+* **Branch 1B (Continuous Projection + Double Normalization Variant):**
+* *Variant B1 (Sequence-Wise Min-Max):* $\frac{x_i - \min(x)}{\max(x) - \min(x) + \epsilon}$ calculated row-wise (along dimension -1).
+* *Variant B2 (Sequence-Wise Z-Score):* $\frac{x_i - \mu_{\text{seq}}}{\sigma_{\text{seq}} + \epsilon}$ calculated row-wise (along dimension -1).
+* Pass the chosen normalized scalar through `nn.Linear(1, d_model)`.
+
+
+* **Branch 1C (Value Functional Encodings):** Direct deterministic mapping of input scalar $x_i$ into periodic space via $\phi(x_i) = [\sin(\omega_1 x_i), \cos(\omega_1 x_i), \dots]$ followed by `nn.Linear(2n, d_model)`.
+
+
+
+#### Phase 2: Establish Non-Transformer Baselines
+
+1. **Multi-Layer Perceptron (MLP):**
+* *Method to try:* Flatten input sequence $10 \times d_{\text{model}}$ into a single vector, pass through 2 hidden layers with ReLU, and output a $10 \times \text{output\_dim}$ tensor.
+
+
+2. **Recurrent Base (GRU or LSTM):**
+* *Method to try:* Run a bidirectional GRU across the 10 token slots. Relational information accumulates sequentially through hidden states $h_t = [\vec{h}_t; \overleftarrow{h}_t]$.
+
+
+3. **Evaluation Metric Baseline:** Record baseline metrics (Sequence-Level Exact Match and Token-Level Accuracy) to measure how sequential/non-attention models handle global comparisons.
+
+#### Phase 3: Manual Encoder-Only Transformer Implementation
+
+1. **Multi-Head Attention (MHA) Layer:**
+* Prohibit `nn.MultiheadAttention`. Implement manual projection matrices ($W_q, W_k, W_v \in \mathbb{R}^{d_{\text{model}} \times d_{\text{model}}}$).
+* Reshape tensors to isolate heads: `(Batch, Heads, Seq_Len, d_head)`.
+* Compute Attention Matrix: $\text{Attn\_Weights} = \text{softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right)$.
+* **CRITICAL HOOK:** Explicitly return `Attn_Weights` along with the vector outputs during forward passes for visualization purposes.
+
+
+2. **Transformer Block Assembly:**
+* Wrap the MHA block with a Token-wise Feed-Forward Network (`nn.Linear` $\to$ `nn.ReLU` $\to$ `nn.Linear`).
+* *Ablation Checkpoint:* Implement Pre-LayerNorm vs Post-LayerNorm toggles to verify optimization stability across the data representation configurations.
+* Add positional encodings (`nn.Embedding` or Fixed Sinusoidal) to allow explicit tracking of positional effects during architectural ablation.
+
+
+
+#### Phase 4: Output Heads & Optimization Setup
+
+1. **Option A (Discrete Token Classification):**
+* Apply a linear projection head `nn.Linear(d_model, 10)` to map each token slot into 10 class logits.
+* Train using standard Cross-Entropy Loss.
+
+
+2. **Option B (Continuous Global Scoring Head):**
+* Project each token position down to a single continuous scalar value using `nn.Linear(d_model, 1)`.
+* Pass the full sequence vector of continuous scores into an regularized isotonic ranking operator (e.g., `torchsort.soft_rank`).
+* Train using Mean Squared Error (MSE) loss evaluated against the continuous targets.
+
+
+
+#### Phase 5: Training and Evaluation Loops
+
+1. **Optimization Loop:** Train all combinations of representations and heads using AdamW with a constant learning rate ($1\times 10^{-3}$) and gradient clipping ($1.0$).
+2. **In-Distribution Evaluation:** Track sequence-level accuracy (all 10 ranks correct) and token-level accuracy on your validation split.
+3. **Out-of-Distribution (OOD) Stress-Testing:** * Evaluate your trained checkpoints directly against the three targeted OOD scenarios:
+* Monotonic tight spacing: `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`
+* Large scale out-of-bounds inputs: `[1000, 900, 800, 700, ...]`
+* Identical values (tie-breaking stress test): `[5, 5, 5, 5, 5]`
+
+
+
+#### Phase 6: Diagnostic Attention Visualization
+
+1. **Extract Attention Matrices:** Run inference on selected test sentences using your saved internal hooks to capture the attention tensors across all heads and layers.
+2. **Plot Structural Analysis Matrices:**
+* Generate Matplotlib heatmaps of the attention weights to check if specific heads track relative magnitude or highlight immediate neighboring boundaries.
+* Track how these patterns evolve across the different data representations and output loss heads.
