@@ -68,7 +68,7 @@ Performs better than the bigram model but remains limited - no connectivity betw
 
 Test ppl: `322.92`
 
-Significant improvement over MLP - the hidden state propagates information forward, enabling the model to maintain some continuity. Bidirectional structure allows each token to access both past and future contexts during training.
+Significant improvement over MLP - the hidden state propagates information forward enabling the model to maintain some continuity. Bidirectional structure allows each token to access both past and future contexts during training.
 
 Generated from prompt "And the":
 
